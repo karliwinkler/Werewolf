@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GamePage from "./components/GamePage.tsx";
 import TitlePage from "./components/TitlePage.tsx";
 import CardPage from "./components/CardPage.tsx";
+import InstructionPage from "./components/InstructionPage.tsx";
 
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
           <Route path="/game/:numPlayers" element={<GamePage />} />
             <Route path="/selection" element={<SelectionPage />} />
             <Route path="/cards/:numPlayers" element={<CardPage />} />
+            <Route path="/instructions" element={<InstructionPage />} />
+            <Route path="/title" element={<TitlePage />} />
         </Routes>
       </Router>
   );
