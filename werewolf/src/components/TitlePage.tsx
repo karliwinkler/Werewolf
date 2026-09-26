@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 function TitlePage() {
     const navigate = useNavigate();
 
-    const handleBegin = () => navigate(`/selection`);
+    const handleBegin = () => navigate(`/cards`);
     const handleHowToPlay = () => navigate(`/instructions`);
 
     return (
-        <div className="h-screen w-screen text-green-900 flex flex-col ">
+        <div className="h-screen w-screen text-green-900 flex flex-col">
 
             {/* Top Right Button */}
             <div className="flex justify-end p-6">
@@ -25,7 +25,7 @@ function TitlePage() {
             <div className="flex flex-col items-center justify-center flex-grow text-center px-4 pb-16">
 
                 <motion.h1
-                    className="text-6xl font-extrabold tracking-wide"
+                    className="md:text-6xl font-extrabold tracking-wide text-5xl"
                     initial={{opacity: 0, y: 30}}
                     animate={{opacity: 1, y: 0}}
                     transition={{duration: 1, ease: "easeOut"}}

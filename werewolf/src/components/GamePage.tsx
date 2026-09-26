@@ -1,69 +1,44 @@
-import {useNavigate, useParams} from 'react-router-dom';
-import {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {useEffect, useRef, useState} from "react";
+import {FaPause, FaPlay} from "react-icons/fa6";
+import {IoIosArrowBack} from "react-icons/io";
+import {scriptBuilder} from "../utils/scriptBuilder.ts";
 
 function GamePage() {
-
+    const [searchParams] = useSearchParams()
+    const characterIds = searchParams.get("characters")?.split(",") ?? [];
     const navigate = useNavigate();
-    const { numPlayers } = useParams();
 
     const [index, setIndex] = useState(0);
     const [discussionTime, setDiscussionTime] = useState(5 * 60);
     const [isDiscussion, setIsDiscussion] = useState(false);
-
-    const introStr= "Everyone close your eyes."
-    const closeEyesStr = "Now close your eyes."
-    const scientistStr = "Scientist, open your eyes. Check the information pile and look at the bottom. You now know if the information is true or false."
-    const CTStr = "Conspiracy theorists, open your eyes. You will also check the information pile and look at the bottom. You will also know if the information is true or false, but you will try to make everyone believe the opposite."
-    const teacherStr = "Teacher, open your eyes. Flip over one card in the middle and leave it face up."
-    const studentStr ="Student, open your eyes. Swap your card with one of the cards in the middle that is still face down, and look at your new card. Note who you are now and close your eyes."
-    const skepticStr ="Skeptic, open your eyes. Take a look at one card in the middle."
-    const fakeMediaStr = "Conspiracy theorist, keep your eyes closed but put your thumb up."
-    const fakeMediaStr2 = "Fake media, open your eyes. Take a look and see if there are conspiracy theorists who have put their thumbs up."
-    const finalStr = "Now everyone wake up."
-    const realMediaStr = "Real Media, open your eyes.  You may look at another player’s card and return it face down."
-
-    type Line = { text: string; duration: number };
-
-    const introText: Line = { text: introStr, duration: 4000 };
-    const scientistText: Line = { text: scientistStr, duration: 5000 };
-    const closeEyesText: Line = { text: closeEyesStr, duration: 3000 };
-    const CTText: Line = { text: CTStr, duration: 7000 };
-    const fakeMediaText: Line = { text: fakeMediaStr, duration: 5000 };
-    const fakeMediaText2: Line = { text: fakeMediaStr2, duration: 5000 };
-    const teacherText: Line = { text: teacherStr, duration: 5000 };
-    const realMediaText: Line = { text: realMediaStr, duration: 5000 };
-    const skepticText: Line = { text: skepticStr, duration: 5000 };
-    const studentText: Line = { text: studentStr, duration: 5000 };
-    const finalText: Line = { text: finalStr, duration: 5000 };
+    const [isDiscussionPaused, setIsDiscussionPaused] = useState(false);
 
     const [isPaused, setIsPaused] = useState(false);
+    const [speed, setSpeed] = useState(1); // 1 = normal, 0.5 = slower, 2 = faster
+    const toggleSpeed = (value: number) => {
+        setSpeed(prev => (prev === value ? 1 : value));
+    };
 
     const handleBack = () => {
         navigate(`/title`);
     }
+    const sortedCharacterIds = characterIds
+        .map((i) => Number(i))
+        .sort((a, b) => a - b);
+    console.log(sortedCharacterIds)
+    const scriptObject = scriptBuilder(sortedCharacterIds)
+    const instructions = scriptObject.texts
+    const instrDuration = scriptObject.durations
+    console.log(instructions)
 
-    const instructions4 = [introText, scientistText, closeEyesText, CTText, closeEyesText, fakeMediaText,
-        fakeMediaText2, closeEyesText, teacherText, closeEyesText, realMediaText, closeEyesText, studentText, closeEyesText, finalText]
+    const remainingRef = useRef(instrDuration[0] ?? 0);
+    const segmentStartRef = useRef(null);
 
-    const instructions5 = [introText, scientistText, closeEyesText, CTText, closeEyesText, fakeMediaText,
-        fakeMediaText2, closeEyesText, teacherText, closeEyesText, realMediaText, closeEyesText, skepticText, closeEyesText, studentText, closeEyesText, finalText]
-
-    const instructions6plus = [introText, scientistText, closeEyesText, CTText, closeEyesText, fakeMediaText,
-        fakeMediaText2, closeEyesText, teacherText, closeEyesText, realMediaText, closeEyesText, skepticText, closeEyesText, finalText]
-
-    let instructions;
-    switch (numPlayers) {
-        case '4':
-            instructions = instructions4;
-            break;
-        case '5':
-            instructions = instructions5;
-            break;
-        default:
-            instructions = instructions6plus;
-    }
-
-    const instrDuration = instructions.map(line => line.duration);
+    // Reset remaining time whenever we move to a new line
+    useEffect(() => {
+        remainingRef.current = instrDuration[index] ?? 0;
+    }, [index]);
 
     useEffect(() => {
         if (isDiscussion) return;
@@ -73,63 +48,102 @@ function GamePage() {
             return;
         }
 
+        segmentStartRef.current = Date.now();
+        const wallClockDelay = remainingRef.current / speed;
+
         const timer = setTimeout(() => {
             setIndex(prev => prev + 1);
-        }, instrDuration[index]);
+        }, wallClockDelay);
 
-        return () => clearTimeout(timer);
-    }, [index, instructions.length, isDiscussion, isPaused]);
+        return () => {
+            clearTimeout(timer);
+            const wallElapsed = Date.now() - segmentStartRef.current;
+            const consumed = wallElapsed * speed;
+            remainingRef.current = Math.max(0, remainingRef.current - consumed);
+        }
+    }, [index, instructions.length, isDiscussion, isPaused, speed]);
 
     useEffect(() => {
         if (!isDiscussion) return;
         if (discussionTime <= 0) return;
-        if (isPaused) return;
+        if (isPaused || isDiscussionPaused) return;
 
         const timer = setInterval(() => {
             setDiscussionTime((prev) => prev - 1);
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [ isDiscussion, discussionTime, isPaused ]);
+    }, [ isDiscussion, discussionTime, isPaused, isDiscussionPaused]);
 
-    const formatTime = (seconds) => {
+    const formatTime = (seconds: number) => {
         const m = Math.floor(seconds / 60).toString().padStart(2, "0");
         const s = (seconds % 60).toString().padStart(2, "0");
         return `${m}:${s}`;
     };
 
     return (
-        <div className="flex items-center justify-center h-screen text-5xl text-center px-4">
+        <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4">
+            <button
+                onClick={() => navigate(-1)}
+                className="fixed top-4 left-4 p-2 hover:scale-110 transition-colors"
+            >
+                <IoIosArrowBack className="text-green-900 text-4xl"/>
+            </button>
+
             {index < instructions.length ?
 
                 <div>
-                    <div className="px-10">
-                        <p>{instructions[index].text}</p>
+                    <div className="md:px-10">
+                        <p className="whitespace-pre-line">{instructions[index]}</p>
                     </div>
 
-                    <button
-                        onClick={() => setIsPaused((p) => !p)}
-                        className="fixed bottom-14 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-2
-                        rounded-xl text-2xl hover:scale-110 hover:bg-green-500 transition-all"
-                    >
-                        {isPaused ? "Play" : "Pause"}
-                    </button>
+                    <div className="fixed md:bottom-14 bottom-8 left-1/2 -translate-x-1/2 text-green-500">
+                        <div className="flex gap-6">
+                            <button onClick={() => toggleSpeed(0.5)}
+                                    className={speed === 0.5 ? 'text-4xl hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
+                            >
+                                0.5x
+                            </button>
 
+                            <button
+                                onClick={() => setIsPaused((p) => !p)}
+                                className="text-5xl text-green-500 hover:scale-110 transition-all ">
+                                {isPaused ? <FaPlay/> : <FaPause/>}
+                            </button>
+                            <button onClick={() => toggleSpeed(2)}
+                                    className={speed === 2 ? 'text-4xl hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
+                            >
+                                2x
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 :
-                <div className="px-10">
+                <div className="flex items-center flex-col ">
                     {discussionTime == 0 ? <p>Time's up!</p> :
-                        <p>You have 5 minutes to discuss what you think the true answer is:</p>}
+                        <p className="mx-8">You have 5 minutes to discuss what you think the true answer is:</p>}
 
-                    <h3 className="text-9xl p-10">{formatTime(discussionTime)}</h3>
+                    <div>
+                        <h3 className="text-9xl p-10 tabular-nums">{formatTime(discussionTime)}</h3>
+                    </div>
 
-                    <button
-                        className="bg-green-600 text-white px-8 py-2 rounded-xl text-2xl
+                    <div className="flex flex-col gap-4 m-4 w-52">
+                        <button
+                            className="bg-green-600 text-white px-6 py-2 rounded-xl text-2xl
                         hover:bg-green-500 hover:scale-110 transition-all"
-                        onClick={() => handleBack()}>
-                        Restart Game
-                    </button>
+                            onClick={() => handleBack()}>
+                            Restart Game
+                        </button>
+                        <button
+                            className="bg-green-600 text-white px-6 py-2 rounded-xl text-2xl
+                        hover:bg-green-500 hover:scale-110 transition-all"
+                            onClick={() => setIsDiscussionPaused(prev => !prev)}
+                            >
+                            {isDiscussionPaused ? 'Resume Timer' : 'Pause Timer'}
+                        </button>
+                    </div>
+
                 </div>
             }
         </div>
