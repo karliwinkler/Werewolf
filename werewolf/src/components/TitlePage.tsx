@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import '/Users/karliwinkler/IdeaProjects/Werewolf/werewolf/src/index.css'
 
 function TitlePage() {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ function TitlePage() {
     const handleHowToPlay = () => navigate(`/instructions`);
 
     return (
-        <div className="h-screen w-screen text-green-900 flex flex-col">
+        <div className="h-screen w-screen text-customBlack flex flex-col">
 
             {/* Top Right Button */}
             <div className="flex justify-end p-6">
@@ -25,7 +26,7 @@ function TitlePage() {
             <div className="flex flex-col items-center justify-center flex-grow text-center px-4 pb-16">
 
                 <motion.h1
-                    className="md:text-6xl font-extrabold tracking-wide text-5xl"
+                    className="md:text-6xl tracking-wide text-5xl font-heading"
                     initial={{opacity: 0, y: 30}}
                     animate={{opacity: 1, y: 0}}
                     transition={{duration: 1, ease: "easeOut"}}
@@ -46,8 +47,8 @@ function TitlePage() {
                 {/* Begin Button */}
                 <button
                     onClick={handleBegin}
-                    className="mt-10 bg-green-600 text-white px-10 py-3 rounded-2xl text-3xl
-                               shadow-xl hover:bg-green-500 hover:scale-110 transition-all"
+                    className="mt-10 bg-customYellow text-customBrown px-10 py-3 text-3xl
+                                md:hover:rotate-3 md:hover:scale-110 transition-all"
                 >
                     Begin
                 </button>

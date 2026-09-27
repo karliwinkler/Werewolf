@@ -1,6 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Fjalla+One&family=League+Gothic&family=Vina+Sans&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bright-yellow: #F2B06C;
+        --dark-brown: #4C3A2A;
+        --teal1: #468681;
+        --teal2: #279F9C;
+        --red-theme: #E96B5F;
+        --black-theme: #171615;
+
+        /* Fonts */
+        --font-bbh-bogle: "BBH Bogle", sans-serif;
+        --font-fjalla: "Fjalla One", sans-serif;
+        --font-league: "League Gothic", sans-serif;
+        --font-vina: "Vina Sans", sans-serif;
+    }
+
+
+}
 
 body {
     background-image: url('./assets/grid_bg.png');

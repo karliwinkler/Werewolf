@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {FaPause, FaPlay} from "react-icons/fa6";
 import {IoIosArrowBack} from "react-icons/io";
 import {scriptBuilder} from "../utils/scriptBuilder.ts";
+import {IoChevronBackSharp} from "react-icons/io5";
 
 function GamePage() {
     const [searchParams] = useSearchParams()
@@ -82,16 +83,16 @@ function GamePage() {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4">
+        <>
             <button
                 onClick={() => navigate(-1)}
-                className="fixed top-4 left-4 p-2 hover:scale-110 transition-colors"
+                className="fixed top-4 left-4 md:p-2 hover:scale-110 transition-colors"
             >
-                <IoIosArrowBack className="text-green-900 text-4xl"/>
+                <IoChevronBackSharp className="text-customBrown text-4xl"/>
             </button>
 
+        <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4 text-customBrown">
             {index < instructions.length ?
-
                 <div>
                     <div className="md:px-10">
                         <p className="whitespace-pre-line">{instructions[index]}</p>
@@ -130,14 +131,14 @@ function GamePage() {
 
                     <div className="flex flex-col gap-4 m-4 w-52">
                         <button
-                            className="bg-green-600 text-white px-6 py-2 rounded-xl text-2xl
-                        hover:bg-green-500 hover:scale-110 transition-all"
+                            className="bg-customYellow  px-6 py-2 text-2xl font-bold
+                        md:hover:rotate-3 md:hover:scale-110 transition-all"
                             onClick={() => handleBack()}>
                             Restart Game
                         </button>
                         <button
-                            className="bg-green-600 text-white px-6 py-2 rounded-xl text-2xl
-                        hover:bg-green-500 hover:scale-110 transition-all"
+                            className="bg-customYellow  px-6 py-2 text-2xl font-bold
+                        md:hover:rotate-3 md:hover:scale-110 transition-all"
                             onClick={() => setIsDiscussionPaused(prev => !prev)}
                             >
                             {isDiscussionPaused ? 'Resume Timer' : 'Pause Timer'}
@@ -146,7 +147,8 @@ function GamePage() {
 
                 </div>
             }
-        </div>
+            </div>
+        </>
     );
 }
 

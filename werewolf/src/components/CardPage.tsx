@@ -1,8 +1,8 @@
 import CharacterCard from "./CharacterCard.tsx";
 import {useNavigate} from "react-router-dom";
-import {IoIosArrowBack} from "react-icons/io";
 import {useState} from "react";
 import {CHARACTERS} from "../utils/characters.ts";
+import {IoChevronBackSharp} from "react-icons/io5";
 
 
 function CardPage() {
@@ -29,12 +29,12 @@ function CardPage() {
                 onClick={() => navigate(-1)}
                 className="fixed top-4 left-4 md:p-2 hover:scale-110 transition-colors"
             >
-                <IoIosArrowBack className="text-green-900 text-4xl"/>
+                <IoChevronBackSharp className="text-customBrown text-4xl"/>
             </button>
 
             <div className="flex flex-col h-screen items-center justify-center gap-4">
-                <h3 className="text-2xl font-extrabold">Select cards:</h3>
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 place-items-center">
+                <h3 className="text-2xl font-extrabold text-customBrown">Select cards:</h3>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 place-items-center">
                         {CHARACTERS.map((char) => (
                             <CharacterCard
                                 key={char.id}
@@ -47,7 +47,7 @@ function CardPage() {
                     </div>
 
                 <button
-                    className="bg-green-600 text-white px-8 py-2 rounded-xl text-2xl hover:bg-green-500 hover:scale-110 transition-all"
+                    className="bg-customYellow text-customBrown font-bold px-8 py-2 text-2xl md:hover:scale-110 md:hover:rotate-3 transition-all"
                     onClick={() => handleNext()}
                 >Play {selectedCards.length - 3}
                 </button>
