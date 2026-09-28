@@ -32,9 +32,9 @@ function CardPage() {
                 <IoChevronBackSharp className="text-customBrown text-4xl"/>
             </button>
 
-            <div className="flex flex-col h-screen items-center justify-center gap-4">
-                <h3 className="text-2xl font-extrabold text-customBrown">Select cards:</h3>
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 place-items-center">
+            <div className="flex flex-col h-screen items-center justify-center gap-4 font-body">
+                <h3 className="md:text-5xl text-4xl text-customBlack font-heading">Select cards:</h3>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-4 place-items-center">
                         {CHARACTERS.map((char) => (
                             <CharacterCard
                                 key={char.id}
@@ -47,7 +47,7 @@ function CardPage() {
                     </div>
 
                 <button
-                    className="bg-customYellow text-customBrown font-bold px-8 py-2 text-2xl md:hover:scale-110 md:hover:rotate-3 transition-all"
+                    className="bg-customYellow text-customBrown mt-6 px-10 py-3 text-3xl md:hover:scale-110 md:hover:rotate-3 transition-all"
                     onClick={() => handleNext()}
                 >Play {selectedCards.length - 3}
                 </button>

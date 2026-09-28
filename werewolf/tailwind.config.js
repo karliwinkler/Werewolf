@@ -16,7 +16,7 @@ export default {
       },
       fontFamily: {
         heading: ["var(--font-bbh-bogle)"],
-        body: ["var(--font-body)"],
+        body: ["var(--font-arvo)"],
       },
     },
   },

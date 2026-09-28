@@ -1,11 +1,11 @@
-import scientist_img from "../assets/scientist.svg";
-import conspirator_img from "../assets/conspiracy.svg";
-import fakemedia_img from "../assets/fake_media.svg";
-import realmedia_img from "../assets/real_media.svg";
-import student_img from "../assets/student.svg";
-import skeptic_img from "../assets/skeptic.svg";
-import teacher_img from "../assets/teacher.pptx.svg";
-import citizen_img from "../assets/citizen.svg";
+import scientist_img from "../assets/scientist.webp";
+import conspirator_img from "../assets/conspiracy.webp";
+import fakemedia_img from "../assets/fake_media.webp";
+import realmedia_img from "../assets/real_media.webp";
+import student_img from "../assets/student.webp";
+import skeptic_img from "../assets/skeptic.webp";
+import teacher_img from "../assets/teacher.pptx.webp";
+import citizen_img from "../assets/citizen.webp";
 
 interface Character {
     id: number;
@@ -54,7 +54,6 @@ export const CHARACTER_BY_ID: Record<string, Character> = Object.fromEntries(
     CHARACTERS.map((c) => [c.id, c])
 );
 
-// Convenience helpers, if you prefer function calls over direct lookups
 export function getCharacterByName(name: string): Character | undefined {
     return CHARACTER_BY_NAME[name];
 }

@@ -1,7 +1,6 @@
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useEffect, useRef, useState} from "react";
 import {FaPause, FaPlay} from "react-icons/fa6";
-import {IoIosArrowBack} from "react-icons/io";
 import {scriptBuilder} from "../utils/scriptBuilder.ts";
 import {IoChevronBackSharp} from "react-icons/io5";
 
@@ -91,28 +90,28 @@ function GamePage() {
                 <IoChevronBackSharp className="text-customBrown text-4xl"/>
             </button>
 
-        <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4 text-customBrown">
+        <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4 text-customBrown font-body">
             {index < instructions.length ?
                 <div>
                     <div className="md:px-10">
                         <p className="whitespace-pre-line">{instructions[index]}</p>
                     </div>
 
-                    <div className="fixed md:bottom-14 bottom-8 left-1/2 -translate-x-1/2 text-green-500">
+                    <div className="fixed md:bottom-14 bottom-8 left-1/2 -translate-x-1/2 text-customBlack">
                         <div className="flex gap-6">
                             <button onClick={() => toggleSpeed(0.5)}
-                                    className={speed === 0.5 ? 'text-4xl hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
+                                    className={speed === 0.5 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl md:hover:scale-110 transition-all'}
                             >
                                 0.5x
                             </button>
 
                             <button
                                 onClick={() => setIsPaused((p) => !p)}
-                                className="text-5xl text-green-500 hover:scale-110 transition-all ">
+                                className="text-5xl md:hover:scale-110 transition-all ">
                                 {isPaused ? <FaPlay/> : <FaPause/>}
                             </button>
                             <button onClick={() => toggleSpeed(2)}
-                                    className={speed === 2 ? 'text-4xl hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
+                                    className={speed === 2 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
                             >
                                 2x
                             </button>

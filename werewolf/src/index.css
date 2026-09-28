@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Fjalla+One&family=League+Gothic&family=Vina+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=BBH+Bogle&family=Domine:wght@400..700&family=Fjalla+One&family=League+Gothic&family=Rokkitt:ital,wght@0,100..900;1,100..900&family=Vina+Sans&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,6 +17,10 @@
         --font-fjalla: "Fjalla One", sans-serif;
         --font-league: "League Gothic", sans-serif;
         --font-vina: "Vina Sans", sans-serif;
+
+        --font-domine: "Domine", serif;
+        --font-rokkitt: "Rokkitt", serif;
+        --font-arvo: "Arvo", serif;
     }
 
 
