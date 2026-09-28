@@ -72,7 +72,7 @@ function GamePage() {
     }, [speed]);
 
     const remainingRef = useRef(durations[0] ?? 0);
-    const segmentStartRef = useRef(null);
+    const segmentStartRef = useRef<number|null>(null);
 
     // Reset remaining time whenever we move to a new line
     useEffect(() => {
@@ -96,6 +96,7 @@ function GamePage() {
 
         return () => {
             clearTimeout(timer);
+            if (segmentStartRef.current == null) return;
             const wallElapsed = Date.now() - segmentStartRef.current;
             const consumed = wallElapsed * speed;
             remainingRef.current = Math.max(0, remainingRef.current - consumed);
