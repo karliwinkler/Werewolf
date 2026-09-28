@@ -1,9 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import '/Users/karliwinkler/IdeaProjects/Werewolf/werewolf/src/index.css'
+import '../index.css'
 import {BsFillQuestionCircleFill} from "react-icons/bs";
 import {CHARACTERS} from "../utils/characters.ts";
 import {useEffect} from "react";
+
+import scientistTitleImg from "../assets/scientist_no_bg.png";
+import citizenTitleImg from "../assets/citizen_no_bg.png";
+import conspiracyTitleImg from "../assets/conspirator_no_bg.png";
+import skepticTitleImg from "../assets/skeptic_no_bg.png";
 
 function TitlePage() {
     const navigate = useNavigate();
@@ -35,16 +40,16 @@ function TitlePage() {
             <div className="flex flex-col items-center justify-center flex-grow text-center px-4 pb-16">
 
                 <div className="relative inline-block">
-                    <img src="../src/assets/scientist_no_bg.png" alt="Scientist"
+                    <img src={scientistTitleImg} alt="Scientist"
                          className="md:w-44 w-32 absolute md:-top-20 md:-left-44 -bottom-64 -left-4"/>
 
-                    <img src="../src/assets/citizen_no_bg.png" alt="Citizen"
+                    <img src={citizenTitleImg} alt="Citizen"
                          className="md:w-36 w-28 absolute md:-bottom-40 md:-left-20 -bottom-80 left-16 -rotate-12"/>
 
-                    <img src="../src/assets/conspirator_no_bg.png" alt="Conspiracy Theorist"
+                    <img src={conspiracyTitleImg} alt="Conspiracy Theorist"
                          className="md:w-40 w-32 absolute md:-top-48 md:-right-8 right-16 -top-48"/>
 
-                    <img src="../src/assets/skeptic_no_bg.png" alt="Skeptic"
+                    <img src={skepticTitleImg} alt="Skeptic"
                          className="rotate-12 md:w-32 w-24 absolute md:-top-24 md:-right-32 -right-2 -top-32"/>
 
                     <motion.h1
