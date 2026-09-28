@@ -7,19 +7,35 @@ import skeptic_img from "../assets/skeptic.webp";
 import teacher_img from "../assets/teacher.pptx.webp";
 import citizen_img from "../assets/citizen.webp";
 
+import startAudio from "../assets/Start.m4a";
+import closeEyesAudio1 from "../assets/CloseEyes1.m4a";
+import closeEyesAudio2 from "../assets/CloseEyes2.m4a";
+import conspiracyAudio from "../assets/ConspiracyTheorists.m4a";
+import scientistAudio from "../assets/Scientist.m4a";
+import teacherAudio from "../assets/Teacher.m4a";
+import studentAudio from "../assets/Student.m4a";
+import skepticAudio from "../assets/Skeptic.m4a";
+import fakeMedia1Audio from "../assets/FakeMedia1.m4a";
+import fakeMedia2Audio from "../assets/FakeMedia2.m4a";
+import realMediaAudio from "../assets/RealMedia.m4a";
+import endAudio from "../assets/End.m4a";
+
 interface Character {
     id: number;
     name: string;
     image: string;
     textArray: string[];
     durationArray: number[];
+    audioArray: any[];
     require: boolean;
 }
 
 export const START_TEXT= "Everyone close your eyes."
 export const START_DURATION = 5000
 export const END_TEXT = "Now everyone wake up."
-export const END_DURATION = 3000
+export const END_DURATION = 5000
+export const START_AUDIO = startAudio
+export const END_AUDIO = endAudio
 
 const closeEyesStr = "Now close your eyes."
 const scientistStr = "Scientist, open your eyes.\n \n Check the information pile and look at the bottom. You now know if the information is true or false."
@@ -27,23 +43,117 @@ const CTStr = "Conspiracy theorists, open your eyes.\n \n You will also check th
 const teacherStr = "Teacher, open your eyes.\n \n Flip over one card in the middle and leave it face up."
 const studentStr ="Student, open your eyes.\n \n Swap your card with one of the cards in the middle that is still face down, and look at your new card.\n \n Note who you are now and close your eyes."
 const skepticStr ="Skeptic, open your eyes.\n \n Take a look at one card in the middle."
-const fakeMediaStr = "Conspiracy theorist, keep your eyes closed but put your thumb up."
+const fakeMediaStr = "Conspiracy theorists, keep your eyes closed but put your thumbs up."
 const fakeMediaStr2 = "Fake media, open your eyes.\n \n Take a look and see if there are conspiracy theorists who have put their thumbs up."
 const realMediaStr = "Real Media, open your eyes.\n \n You may look at another player’s card and return it face down."
 
 export const CHARACTERS: Character[] = [
-    { id: 0, name: "Scientist", image: scientist_img, textArray: [scientistStr, closeEyesStr], durationArray: [5000, 5000], require: true },
-    { id: 4, name: "Real Media", image: realmedia_img, textArray: [realMediaStr, closeEyesStr], durationArray: [5000, 5000], require: true },
-    { id: 1, name: "Conspiracy Theorist", image: conspirator_img, textArray: [CTStr, closeEyesStr], durationArray: [5000, 5000], require: true },
-    { id: 2, name: "Conspiracy Theorist", image: conspirator_img, textArray: [], durationArray: [], require: true },
-    { id: 3, name: "Fake Media", image: fakemedia_img, textArray: [fakeMediaStr, fakeMediaStr2, closeEyesStr], durationArray: [5000, 5000, 5000], require: true },
-    { id: 8, name: "Citizen", image: citizen_img, textArray: [], durationArray: [], require: true },
-    { id: 7, name: "Teacher", image: teacher_img, textArray: [teacherStr, closeEyesStr], durationArray: [5000, 5000], require: false },
-    { id: 6, name: "Skeptic", image: skeptic_img, textArray: [skepticStr, closeEyesStr], durationArray: [5000, 5000], require: false },
-    { id: 5, name: "Student", image: student_img, textArray: [studentStr, closeEyesStr], durationArray: [5000, 5000], require: false },
-    { id: 9, name: "Citizen", image: citizen_img, textArray: [], durationArray: [], require: false },
-    { id: 10, name: "Citizen", image: citizen_img, textArray: [], durationArray: [], require: false },
-    { id: 11, name: "Citizen", image: citizen_img, textArray: [], durationArray: [], require: false },
+    {
+        id: 0, name: "Scientist",
+        image: scientist_img,
+        textArray: [scientistStr, closeEyesStr],
+        durationArray: [16000, 5000],
+        audioArray: [scientistAudio, closeEyesAudio1],
+        require: true
+    },
+    {
+        id: 4, name: "Real Media",
+        image: realmedia_img,
+        textArray: [realMediaStr, closeEyesStr],
+        durationArray: [15000, 5000],
+        audioArray: [realMediaAudio, closeEyesAudio2],
+        require: true
+    },
+    {
+        id: 1,
+        name: "Conspiracy Theorist",
+        image: conspirator_img,
+        textArray: [CTStr, closeEyesStr],
+        durationArray: [21000, 5000],
+        audioArray: [conspiracyAudio, closeEyesAudio2],
+        require: true
+    },
+    {
+        id: 2,
+        name: "Conspiracy Theorist",
+        image: conspirator_img,
+        textArray: [],
+        durationArray: [],
+        audioArray: [],
+        require: true
+    },
+    {
+        id: 3,
+        name: "Fake Media",
+        image: fakemedia_img,
+        textArray: [fakeMediaStr, fakeMediaStr2, closeEyesStr],
+        durationArray: [8000, 16000, 5000],
+        audioArray: [fakeMedia1Audio, fakeMedia2Audio, closeEyesAudio1],
+        require: true
+    },
+    {
+        id: 8,
+        name: "Citizen",
+        image: citizen_img,
+        textArray: [],
+        durationArray: [],
+        audioArray: [],
+        require: true
+    },
+    {
+        id: 7,
+        name: "Teacher",
+        image: teacher_img,
+        textArray: [teacherStr, closeEyesStr],
+        durationArray: [13000, 5000],
+        audioArray: [teacherAudio, closeEyesAudio1],
+        require: false
+    },
+    {
+        id: 6,
+        name: "Skeptic",
+        image: skeptic_img,
+        textArray: [skepticStr, closeEyesStr],
+        durationArray: [12000, 5000],
+        audioArray: [skepticAudio, closeEyesAudio1],
+        require: false
+    },
+    {
+        id: 5,
+        name: "Student",
+        image: student_img,
+        textArray: [studentStr, closeEyesStr],
+        durationArray: [18000, 5000],
+        audioArray: [studentAudio, closeEyesAudio1],
+        require: false
+    },
+    {
+        id: 9,
+        name: "Citizen",
+        image: citizen_img,
+        textArray: [],
+        durationArray: [],
+        audioArray: [],
+        require: false
+    },
+    {
+        id: 10,
+        name: "Citizen",
+        image: citizen_img,
+        textArray: [],
+        durationArray: [],
+        audioArray: [],
+        require: false
+    },
+    {
+        id: 11,
+        name: "Citizen",
+        image: citizen_img,
+        textArray: [],
+        durationArray: [],
+        audioArray: [],
+        require: false
+    },
 ]
 
 export const CHARACTER_BY_NAME: Record<string, Character> = Object.fromEntries(

@@ -26,24 +26,63 @@ function GamePage() {
     const sortedCharacterIds = characterIds
         .map((i) => Number(i))
         .sort((a, b) => a - b);
-    console.log(sortedCharacterIds)
-    const scriptObject = scriptBuilder(sortedCharacterIds)
-    const instructions = scriptObject.texts
-    const instrDuration = scriptObject.durations
-    console.log(instructions)
+    const { texts, durations, audios } = scriptBuilder(sortedCharacterIds)
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const remainingRef = useRef(instrDuration[0] ?? 0);
+// Play the new line's audio whenever index changes
+    useEffect(() => {
+        if (isDiscussion) return;
+        if (index >= texts.length) return;
+
+        // stop whatever was playing before
+        audioRef.current?.pause();
+
+        const clipSrc = audios[index];
+        if (!clipSrc) return; // no audio for this line — skip silently
+
+        const audio = new Audio(clipSrc);
+        audio.playbackRate = speed;
+        audioRef.current = audio;
+
+        if (!isPaused) {
+            audio.play();
+        }
+
+        return () => {
+            audio.pause();
+        };
+    }, [index, isDiscussion]);
+
+// Keep audio in sync with pause/resume
+    useEffect(() => {
+        if (!audioRef.current) return;
+
+        if (isPaused || isDiscussion) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
+    }, [isPaused, isDiscussion]);
+
+// Keep audio speed in sync with playback speed control
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.playbackRate = speed;
+        }
+    }, [speed]);
+
+    const remainingRef = useRef(durations[0] ?? 0);
     const segmentStartRef = useRef(null);
 
     // Reset remaining time whenever we move to a new line
     useEffect(() => {
-        remainingRef.current = instrDuration[index] ?? 0;
+        remainingRef.current = durations[index] ?? 0;
     }, [index]);
 
     useEffect(() => {
         if (isDiscussion) return;
         if (isPaused) return;
-        if (index >= instructions.length) {
+        if (index >= texts.length) {
             setIsDiscussion(true);
             return;
         }
@@ -61,7 +100,7 @@ function GamePage() {
             const consumed = wallElapsed * speed;
             remainingRef.current = Math.max(0, remainingRef.current - consumed);
         }
-    }, [index, instructions.length, isDiscussion, isPaused, speed]);
+    }, [index, texts.length, isDiscussion, isPaused, speed]);
 
     useEffect(() => {
         if (!isDiscussion) return;
@@ -91,16 +130,16 @@ function GamePage() {
             </button>
 
         <div className="flex items-center justify-center h-screen md:text-5xl text-3xl text-center px-4 text-customBrown font-body">
-            {index < instructions.length ?
+            {index < texts.length ?
                 <div>
                     <div className="md:px-10">
-                        <p className="whitespace-pre-line">{instructions[index]}</p>
+                        <p className="whitespace-pre-line">{texts[index]}</p>
                     </div>
 
                     <div className="fixed md:bottom-14 bottom-8 left-1/2 -translate-x-1/2 text-customBlack">
                         <div className="flex gap-6">
-                            <button onClick={() => toggleSpeed(0.5)}
-                                    className={speed === 0.5 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl md:hover:scale-110 transition-all'}
+                            <button onClick={() => toggleSpeed(0.75)}
+                                    className={speed === 0.75 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl md:hover:scale-110 transition-all'}
                             >
                                 0.5x
                             </button>
@@ -110,8 +149,8 @@ function GamePage() {
                                 className="text-5xl md:hover:scale-110 transition-all ">
                                 {isPaused ? <FaPlay/> : <FaPause/>}
                             </button>
-                            <button onClick={() => toggleSpeed(2)}
-                                    className={speed === 2 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
+                            <button onClick={() => toggleSpeed(1.25)}
+                                    className={speed === 1.25 ? 'text-4xl md:hover:scale-110 transition-all font-bold' : 'text-4xl hover:scale-110 transition-all'}
                             >
                                 2x
                             </button>

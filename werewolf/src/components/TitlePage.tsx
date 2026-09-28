@@ -2,12 +2,21 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '/Users/karliwinkler/IdeaProjects/Werewolf/werewolf/src/index.css'
 import {BsFillQuestionCircleFill} from "react-icons/bs";
+import {CHARACTERS} from "../utils/characters.ts";
+import {useEffect} from "react";
 
 function TitlePage() {
     const navigate = useNavigate();
 
     const handleBegin = () => navigate(`/cards`);
     const handleHowToPlay = () => navigate(`/instructions`);
+
+    useEffect(() => {
+        CHARACTERS.forEach((char) => {
+            const img = new Image();
+            img.src = char.image;
+        });
+    }, []);
 
     return (
         <div className="h-screen w-screen text-customBlack flex flex-col font-body">
@@ -29,8 +38,14 @@ function TitlePage() {
                     <img src="../src/assets/scientist_no_bg.png" alt="Scientist"
                          className="md:w-44 w-32 absolute md:-top-20 md:-left-44 -bottom-64 -left-4"/>
 
+                    <img src="../src/assets/citizen_no_bg.png" alt="Citizen"
+                         className="md:w-36 w-28 absolute md:-bottom-40 md:-left-20 -bottom-80 left-16 -rotate-12"/>
+
+                    <img src="../src/assets/conspirator_no_bg.png" alt="Conspiracy Theorist"
+                         className="md:w-40 w-32 absolute md:-top-48 md:-right-8 right-16 -top-48"/>
+
                     <img src="../src/assets/skeptic_no_bg.png" alt="Skeptic"
-                         className="md:w-44 w-32 absolute md:-top-20 md:-left-44 -bottom-64 -left-4"/>
+                         className="rotate-12 md:w-32 w-24 absolute md:-top-24 md:-right-32 -right-2 -top-32"/>
 
                     <motion.h1
                         className="md:text-8xl tracking-wide text-7xl font-heading"
@@ -41,11 +56,6 @@ function TitlePage() {
                         The Hidden Truth
                     </motion.h1>
 
-                    <img src="../src/assets/conspirator_no_bg.png" alt="Conspiracy Theorist"
-                         className="md:w-40 w-32 absolute md:-bottom-40 md:-right-24 -right-2 -top-40 rotate-6"/>
-
-                    <img src="../src/assets/citizen_no_bg.png" alt="Citizen"
-                         className="md:w-36 w-28 absolute md:-bottom-40 md:-left-20 -bottom-80 left-16 -rotate-12"/>
                 </div>
 
                 <motion.h2
